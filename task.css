@@ -1,0 +1,83 @@
+.task-body textarea{
+	min-height: 50px;
+	width: 100%;
+	max-width: 100%;
+}
+
+.task-entry{
+	line-height: 50px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.task-entry:not(:last-child){
+	border-bottom: 1px solid grey;
+}
+
+/*@-webkit-keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+html {
+  -webkit-animation: rotating 2s linear infinite;
+  -moz-animation: rotating 2s linear infinite;
+  -ms-animation: rotating 2s linear infinite;
+  -o-animation: rotating 2s linear infinite;
+  animation: rotating 2s linear infinite;
+}*/
+
+.task-entry .checkmark{
+	width: 50px;
+	height: 50px;
+	font-size: 30px;
+	display: inline-block;
+	border: 3px solid #000;
+	border-radius: 50%;
+	color: #000;
+	text-align: center;
+    vertical-align: bottom;
+    cursor: pointer;
+}
+
+.task-entry .checkmark.checked{
+	color: lightgreen;
+	border-color: lightgreen;
+}
+
+.task-entry .task-title{
+	display: inline-block;
+	padding-left: 10px;
+}
+
+#quick-task .task-body-options{
+	margin-top: 20px;
+}
