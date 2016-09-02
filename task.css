@@ -14,6 +14,10 @@
 	border-bottom: 1px solid grey;
 }
 
+.task-entry:hover{
+	background-color: #eee;
+}
+
 /*@-webkit-keyframes rotating {
   from {
     -ms-transform: rotate(0deg);
@@ -80,4 +84,23 @@ html {
 
 #quick-task .task-body-options{
 	margin-top: 20px;
+}
+
+.project {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.grid-size, .grid-item{
+    width: 100%;
+}
+
+@media only screen and (min-width: 992px){
+    .grid-size, .grid-item{
+        width: 48%;
+    }
+
+    .grid-gutter{
+        width: 4%;
+    }
 }

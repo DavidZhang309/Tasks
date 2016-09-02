@@ -1,13 +1,8 @@
 <?php
 session_start();
 include_once __DIR__ . '/../lib/TaskDB.php';
+include_once __DIR__ . '/../lib/utils.php';
 include_once __DIR__ . '/../auth/auth_utils.php';
-
-function abort($error_type, $error_msg = "")
-{
-	echo json_encode(array("error_type" => $error_type, "error_msg" => $error_msg));
-	exit();
-}
 
 //temp: this will be a db function
 function can_edit($db, $user_id, $project_id){

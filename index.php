@@ -82,19 +82,20 @@ $stmt->close();
 		</div>
 		<div class="col-md-6">
 			<div class="input-group">
-				<input type="text" placeholder="Create Project" class="form-control">
+				<input type="text" placeholder="Create Project" class="form-control project-create">
 				<div class="input-group-btn">
-					<button class="btn btn-primary create-project-button">Create</button>
+					<button class="btn btn-primary project-create-button">Create</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-6">
-			<?php foreach ($projects as $project_id => $project_data) {
-				write_project_panel($project_id, $project_data);
-			} ?>
+	<div class="grid">
+		<div class="grid-size"></div>
+		<?php foreach ($projects as $project_id => $project_data) { ?>
+		<div class="grid-item">
+			<?php write_project_panel($project_id, $project_data); ?>
 		</div>
+		<?php } ?>
 	</div>
 </div>
 <div id="project-container" class="container-fluid">
@@ -115,9 +116,11 @@ $stmt->close();
 <script src="/extlib/sprintf.min.js"></script>
 <script src="/extlib/jquery-2.2.4.min.js"></script>
 <script src="/extlib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/extlib/masonry.pkgd.min.js"></script>
 <script src="task.js"></script>
 <script type="text/javascript">
 	var taskEntryTemplate = '<?= get_tasklist_entry_template() ?>';
+	var $grid = null;
 
 	$(document).ready(function () {
 		$("#quick-task").on("click", ".create-task", function(){
@@ -142,12 +145,23 @@ $stmt->close();
 						sprintf(taskEntryTemplate, data["id"], "", data["task"])
 					);
 					$modal.modal("hide");
+					$grid.masonry();
 				},
 				error: function(response){
 					alert(response.responseText);
 				}
 			});
 		});
+
+		//init masonry
+		$grid = $(".grid").masonry({
+			columnWidth: ".grid-size",
+			itemSelector: ".grid-item",
+			percentPosition: true,
+			gutter: 30
+		});
+
+
 	}).on("click", ".task-entry .checkmark", function(){
 		var $this = $(this);
 		//check if currently making a request
