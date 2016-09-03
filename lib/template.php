@@ -68,10 +68,10 @@ function write_project_panel($project_id, $project_data){ ?>
 			}
 			echo $task_html;
 			?>
-			<h4 class="task-completed-show <?= strlen($task_complete_html) == 0 ? "hidden" : "" ?>">Completed Tasks</h4>
-			<div class="task-completed collapse">
-				<?php echo $task_complete_html; ?>
-			</div>
+		</div>
+		<h4 class="project-tasks-completed-show <?= strlen($task_complete_html) == 0 ? "hidden" : "" ?>">Completed Tasks</h4>
+		<div class="project-tasks-completed collapse">
+			<?php echo $task_complete_html; ?>
 		</div>
 	</div>
 </div>

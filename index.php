@@ -150,9 +150,9 @@ $stmt->close();
 			$grid.masonry();
 		}).on("hidden.bs.collapse", function(){
 			$grid.masonry();
-		}).on("click", ".task-completed-show", function(){
+		}).on("click", ".project-tasks-completed-show", function(){
 			var $this = $(this);
-			$this.siblings(".task-completed").collapse("toggle");
+			$this.siblings(".project-tasks-completed").collapse("toggle");
 		});
 
 		//init masonry
@@ -166,6 +166,8 @@ $stmt->close();
 
 	}).on("click", ".task-entry .checkmark", function(){
 		var $this = $(this);
+		var $entry = $this.closest(".task-entry");
+		var $project = $entry.closest(".project");
 		//check if currently making a request
 		if ($this.attr("data-update-state") == "sending") { 
 			return;
@@ -179,8 +181,8 @@ $stmt->close();
 			type: "post",
 			dataType: "json",
 			data: {
-				projectID: $this.closest(".project").attr("data-project-id"),
-				taskID: $this.closest(".task-entry").attr("data-entry-id"),
+				projectID: $project.attr("data-project-id"),
+				taskID: $entry.attr("data-entry-id"),
 				finished: $this.hasClass("checked") ? 0 : 1
 			},
 			success: function(data){
@@ -190,11 +192,13 @@ $stmt->close();
 					return;
 				}
 				//visually show new state
-				if ($this.hasClass("checked")){
+				if ($this.hasClass("checked")) {
 					$this.removeClass("checked");
+					$project.find(".project-tasks").prepend($entry.detach());
 				}
-				else{
+				else {
 					$this.addClass("checked");
+					$project.find(".project-tasks-completed").prepend($entry.detach());
 				}
 			},
 			error: function(response){
