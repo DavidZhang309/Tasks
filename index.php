@@ -9,16 +9,7 @@ if ($user == -1){
 	header('location: auth/login.php');
 }
 
-
-
-//test data
-$project_data = array(
-	"id" => 1,
-	"name" => "project1"
-);
-
 $db_connection = new TaskDB();
-
 //retrieve data
 $projects = array();
 $stmt = $db_connection->prepare('
@@ -81,12 +72,14 @@ $stmt->close();
 			</div>
 		</div>
 		<div class="col-md-6">
-			<div class="input-group">
-				<input type="text" placeholder="Create Project" class="form-control project-create">
-				<div class="input-group-btn">
-					<button class="btn btn-primary project-create-button">Create</button>
+			<form action="query/project_update.php" method="POST">
+				<div class="input-group">
+					<input type="text" name="projectName" placeholder="Create Project" class="form-control project-create">
+					<div class="input-group-btn">
+						<button class="btn btn-primary project-create-button">Create</button>
+					</div>
 				</div>
-			</div>
+			</form>
 		</div>
 	</div>
 	<div class="grid">
