@@ -91,6 +91,16 @@ html {
     margin-bottom: 15px;
 }
 
+.project-tasks-completed-show {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 1px solid #aaa;
+}
+
 .grid-size, .grid-item{
     width: 100%;
 }
