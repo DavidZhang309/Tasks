@@ -195,10 +195,14 @@ $stmt->close();
 				if ($this.hasClass("checked")) {
 					$this.removeClass("checked");
 					$project.find(".project-tasks").prepend($entry.detach());
+					updateCompletedTask($project);
+					$grid.masonry();
 				}
 				else {
 					$this.addClass("checked");
 					$project.find(".project-tasks-completed").prepend($entry.detach());
+					updateCompletedTask($project);
+					$grid.masonry();
 				}
 			},
 			error: function(response){
