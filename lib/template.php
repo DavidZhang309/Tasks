@@ -37,7 +37,7 @@ function write_project_panel($project_id, $project_data){ ?>
 	<div class="panel-heading">
 		<div class="pull-right">
 			<div class="project-options">
-				<button class="project-quick-add btn btn-primary">Quick Task</button>
+				<button class="project-quick-add btn btn-primary">Quick Task <i class="fa fa-plus"></i></button>
 				<button class="project-goto btn btn-info">Open</button>
 			</div>
 		</div>
@@ -49,15 +49,29 @@ function write_project_panel($project_id, $project_data){ ?>
 		<div class="project-tasks">
 			<?php 
 			$task_html = '';
+			$task_complete_html = '';
 			foreach ($project_data["tasks"] as $task_id => $task_data) {
-				$task_html .= sprintf(get_tasklist_entry_template(),
-					$task_id,
-					$task_data["finished"] ? "checked" : "",
-					$task_data["task"]
-				);
+				if ($task_data["finished"]){
+					$task_complete_html .= sprintf(get_tasklist_entry_template(),
+						$task_id,
+						"checked",
+						$task_data["task"]
+					);
+				}
+				else {
+					$task_html .= sprintf(get_tasklist_entry_template(),
+						$task_id,
+						"",
+						$task_data["task"]
+					);
+				}
 			}
 			echo $task_html;
 			?>
+			<h4 class="task-completed-show <?= strlen($task_complete_html) == 0 ? "hidden" : "" ?>">Completed Tasks</h4>
+			<div class="task-completed collapse">
+				<?php echo $task_complete_html; ?>
+			</div>
 		</div>
 	</div>
 </div>

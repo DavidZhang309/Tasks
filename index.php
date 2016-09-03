@@ -38,13 +38,14 @@ while($stmt->fetch()){
 	else{
 		$projects[$query_project_id] = array(
 			"name" => $query_name,
-			"tasks" => array(
-				$query_task_id => array( 
-					"task" => $query_task, 
-					"finished" => $query_finished
-				)
-			)
+			"tasks" => array()
 		);	
+		if ($query_task_id !== null) {
+			$projects[$query_project_id]["tasks"][$query_task_id] = array( 
+				"task" => $query_task, 
+				"finished" => $query_finished
+			);
+		}
 	}
 }
 $stmt->close();
@@ -105,7 +106,6 @@ $stmt->close();
 </div>
 </div>
 </div>
-
 <script src="/extlib/sprintf.min.js"></script>
 <script src="/extlib/jquery-2.2.4.min.js"></script>
 <script src="/extlib/bootstrap/js/bootstrap.min.js"></script>
@@ -144,6 +144,15 @@ $stmt->close();
 					alert(response.responseText);
 				}
 			});
+		});
+
+		$projects = $(".project").on("shown.bs.collapse", function(){
+			$grid.masonry();
+		}).on("hidden.bs.collapse", function(){
+			$grid.masonry();
+		}).on("click", ".task-completed-show", function(){
+			var $this = $(this);
+			$this.siblings(".task-completed").collapse("toggle");
 		});
 
 		//init masonry
