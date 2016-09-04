@@ -16,7 +16,7 @@ function can_edit($db, $user_id, $project_id){
 		FROM tbl_project_collaborators
 		WHERE UserID=? AND ProjectID=?
 	");
-	$stmt->bind_param("ii", $user_id, $user_id);
+	$stmt->bind_param("ii", $user_id, $project_id);
 	$stmt->execute();
 	$has_project = $stmt->fetch();
 	$stmt->close();
