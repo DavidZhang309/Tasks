@@ -5,9 +5,13 @@
 }
 
 .task-entry{
-	line-height: 50px;
 	padding-top: 5px;
 	padding-bottom: 5px;
+}
+
+.task-entry .task-title {
+  width: calc(100% - 55px);
+  vertical-align: middle;
 }
 
 .task-entry:not(:last-child){
@@ -18,47 +22,6 @@
 	background-color: #eee;
 }
 
-/*@-webkit-keyframes rotating {
-  from {
-    -ms-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  to {
-    -ms-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@keyframes rotating {
-  from {
-    -ms-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  to {
-    -ms-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-html {
-  -webkit-animation: rotating 2s linear infinite;
-  -moz-animation: rotating 2s linear infinite;
-  -ms-animation: rotating 2s linear infinite;
-  -o-animation: rotating 2s linear infinite;
-  animation: rotating 2s linear infinite;
-}*/
-
 .task-entry .checkmark{
 	width: 50px;
 	height: 50px;
@@ -68,7 +31,7 @@ html {
 	border-radius: 50%;
 	color: #000;
 	text-align: center;
-    vertical-align: bottom;
+    vertical-align: middle;
     cursor: pointer;
 }
 
@@ -89,6 +52,29 @@ html {
 .project {
     margin-top: 15px;
     margin-bottom: 15px;
+}
+
+.project h4 {
+    display: inline-block;
+}
+
+.project .project-options {
+    vertical-align: middle;
+}
+@media only screen and (min-width: 768px) {
+    .project .project-options {
+        display: inline-block;
+        float: right;
+    }
+}
+
+.project .option-desc {
+    display: none;
+}
+@media only screen and (min-width: 768px) {
+    .project .option-desc {
+        display: inline-block;
+    }
 }
 
 .project-tasks-completed-show {

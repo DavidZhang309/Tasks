@@ -35,15 +35,22 @@ function write_quick_task_modal() { ?>
 function write_project_panel($project_id, $project_data){ ?>
 <div class="panel panel-default project" data-project-id="<?= $project_id ?>">
 	<div class="panel-heading">
-		<div class="pull-right">
-			<div class="project-options">
-				<button class="project-quick-add btn btn-primary">Quick Task <i class="fa fa-plus"></i></button>
-				<button class="project-goto btn btn-info">Open</button>
-			</div>
+		<h4 class="project-title"><?= $project_data['name'] ?></h4>
+		<div class="project-options">
+			<button class="project-quick-add btn btn-primary">
+				<span class="option-desc">Quick Task </span>
+				<i class="fa fa-plus"></i>
+			</button>
+			<button class="project-goto btn btn-info">
+				<span class="option-desc">Open </span>
+				<i class="fa fa-book"></i>
+			</button>
+			<button class="project-archive btn btn-danger">
+				<span class="option-desc">Archive </span>
+				<i class="fa fa-archive"></i>
+			</button>
 		</div>
-		<h4 class="project-title">
-			<?= $project_data['name'] ?>
-		</h4>
+		
 	</div>
 	<div class="panel-body">
 		<div class="project-tasks">
