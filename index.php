@@ -61,7 +61,8 @@ $stmt->close();
 	<link href="task.css" rel="stylesheet"/>
 </head>
 <body>
-<?php write_quick_task_modal() ?>
+<?php write_quick_task_modal(); ?>
+<?php write_confirmation_modal(); ?>
 <div id="projects-container" class="container">
 	<div class="row">
 		<div class="col-md-6">
@@ -116,7 +117,9 @@ $stmt->close();
 	var $grid = null;
 
 	$(document).ready(function () {
-		$("#quick-task").on("click", ".create-task", function(){
+		$("#quick-task").on("shown.bs.modal", function(){
+			$(this).find("input.task-name").focus();
+		}).on("click", ".create-task", function(){
 			var $this = $(this);
 			var $modal = $("#quick-task");
 			var projectID = $modal.attr("data-project-id");
@@ -153,6 +156,8 @@ $stmt->close();
 		}).on("click", ".project-tasks-completed-show", function(){
 			var $this = $(this);
 			$this.siblings(".project-tasks-completed").collapse("toggle");
+		}).on("click", ".project-archive", function(){
+			openConfirmation($("#confirmation"), "archive", "Are you sure you want to archive this project?");
 		});
 
 		//init masonry

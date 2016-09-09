@@ -32,6 +32,27 @@ function write_quick_task_modal() { ?>
 </div>
 <?php } 
 
+function write_confirmation_modal() { ?>
+<div id="confirmation" class="modal fade"> 
+	<div class="modal-dialog">
+		<div class="modal-content">
+  			<div class="modal-header">
+    			<button type="button" class="close" data-dismiss="modal">
+      				<span>&times;</span>
+    			</button>
+    			<h3 class="modal-title">Confirmation</h3>
+  			</div>
+      		<div class="modal-body">
+      		</div>
+      		<div class="modal-footer">
+				<button type="button" class="btn btn-primary option-cancel" data-dismiss="modal">No</button>
+				<button type="button" class="btn btn-primary option-confirm">Yes</button>
+      		</div>
+      	</div>
+    </div>
+</div>
+<?php }
+
 function write_project_panel($project_id, $project_data){ ?>
 <div class="panel panel-default project" data-project-id="<?= $project_id ?>">
 	<div class="panel-heading">
