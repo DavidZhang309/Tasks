@@ -56,8 +56,8 @@ $stmt->close();
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="/extlib/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-	<link href="/extlib/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+	<link href="vendor/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" />
 	<link href="task.css" rel="stylesheet"/>
 </head>
 <body>
@@ -107,10 +107,10 @@ $stmt->close();
 </div>
 </div>
 </div>
-<script src="/extlib/sprintf.min.js"></script>
-<script src="/extlib/jquery-2.2.4.min.js"></script>
-<script src="/extlib/bootstrap/js/bootstrap.min.js"></script>
-<script src="/extlib/masonry.pkgd.min.js"></script>
+<script src="vendor/sprintf.min.js"></script>
+<script src="vendor/jquery-2.2.4.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/masonry.pkgd.min.js"></script>
 <script src="task.js"></script>
 <script type="text/javascript">
 	var taskEntryTemplate = '<?= get_tasklist_entry_template() ?>';
