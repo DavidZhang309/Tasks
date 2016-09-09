@@ -1,11 +1,11 @@
 <?php
 session_start();
-include_once 'auth/auth_utils.php';
-include_once 'lib/TaskDB.php';
-include_once 'lib/template.php';
+include_once __DIR__ . '/../auth/php/auth_utils.php';
+include_once __DIR__ . '/../php/TaskDB.php';
+include_once __DIR__ . '/../php/template.php';
 
 $user = get_user_id();
-if ($user == -1){
+if ($user == -1) {
 	header('location: auth/login.php');
 }
 

@@ -1,7 +1,7 @@
 <?php
-include_once __DIR__ . '/../lib/TaskDB.php';
-include_once __DIR__ . '/../lib/utils.php';
-include_once __DIR__ . '/../auth/auth_utils.php';
+include_once __DIR__ . '/../../auth/php/auth_utils.php';
+include_once __DIR__ . '/../../php/TaskDB.php';
+include_once __DIR__ . '/../../php/utils.php';
 session_start();
 
 function redirect() {
