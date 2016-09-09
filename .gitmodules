@@ -1,3 +1,0 @@
-[submodule "WebModules-auth"]
-	path = auth
-	url = https://github.com/DavidZhang309/WebModules-auth.git
