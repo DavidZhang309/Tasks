@@ -1,24 +1,15 @@
 <?php
 session_start();
-include_once 'auth/auth_utils.php';
-include_once 'lib/TaskDB.php';
-include_once 'lib/template.php';
+include_once __DIR__ . '/../auth/php/auth_utils.php';
+include_once __DIR__ . '/../php/TaskDB.php';
+include_once __DIR__ . '/../php/template.php';
 
 $user = get_user_id();
-if ($user == -1){
+if ($user == -1) {
 	header('location: auth/login.php');
 }
 
-
-
-//test data
-$project_data = array(
-	"id" => 1,
-	"name" => "project1"
-);
-
 $db_connection = new TaskDB();
-
 //retrieve data
 $projects = array();
 $stmt = $db_connection->prepare('
@@ -47,13 +38,14 @@ while($stmt->fetch()){
 	else{
 		$projects[$query_project_id] = array(
 			"name" => $query_name,
-			"tasks" => array(
-				$query_task_id => array( 
-					"task" => $query_task, 
-					"finished" => $query_finished
-				)
-			)
+			"tasks" => array()
 		);	
+		if ($query_task_id !== null) {
+			$projects[$query_project_id]["tasks"][$query_task_id] = array( 
+				"task" => $query_task, 
+				"finished" => $query_finished
+			);
+		}
 	}
 }
 $stmt->close();
@@ -69,7 +61,8 @@ $stmt->close();
 	<link href="task.css" rel="stylesheet"/>
 </head>
 <body>
-<?php write_quick_task_modal() ?>
+<?php write_quick_task_modal(); ?>
+<?php write_confirmation_modal(); ?>
 <div id="projects-container" class="container">
 	<div class="row">
 		<div class="col-md-6">
@@ -81,20 +74,23 @@ $stmt->close();
 			</div>
 		</div>
 		<div class="col-md-6">
-			<div class="input-group">
-				<input type="text" placeholder="Create Project" class="form-control">
-				<div class="input-group-btn">
-					<button class="btn btn-primary create-project-button">Create</button>
+			<form action="query/project_update.php" method="POST">
+				<div class="input-group">
+					<input type="text" name="projectName" placeholder="Create Project" class="form-control project-create">
+					<div class="input-group-btn">
+						<button class="btn btn-primary project-create-button">Create</button>
+					</div>
 				</div>
-			</div>
+			</form>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-6">
-			<?php foreach ($projects as $project_id => $project_data) {
-				write_project_panel($project_id, $project_data);
-			} ?>
+	<div class="grid">
+		<div class="grid-size"></div>
+		<?php foreach ($projects as $project_id => $project_data) { ?>
+		<div class="grid-item">
+			<?php write_project_panel($project_id, $project_data); ?>
 		</div>
+		<?php } ?>
 	</div>
 </div>
 <div id="project-container" class="container-fluid">
@@ -111,16 +107,19 @@ $stmt->close();
 </div>
 </div>
 </div>
-
 <script src="/extlib/sprintf.min.js"></script>
 <script src="/extlib/jquery-2.2.4.min.js"></script>
 <script src="/extlib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/extlib/masonry.pkgd.min.js"></script>
 <script src="task.js"></script>
 <script type="text/javascript">
 	var taskEntryTemplate = '<?= get_tasklist_entry_template() ?>';
+	var $grid = null;
 
 	$(document).ready(function () {
-		$("#quick-task").on("click", ".create-task", function(){
+		$("#quick-task").on("shown.bs.modal", function(){
+			$(this).find("input.task-name").focus();
+		}).on("click", ".create-task", function(){
 			var $this = $(this);
 			var $modal = $("#quick-task");
 			var projectID = $modal.attr("data-project-id");
@@ -142,14 +141,38 @@ $stmt->close();
 						sprintf(taskEntryTemplate, data["id"], "", data["task"])
 					);
 					$modal.modal("hide");
+					$grid.masonry();
 				},
 				error: function(response){
 					alert(response.responseText);
 				}
 			});
 		});
+
+		$projects = $(".project").on("shown.bs.collapse", function(){
+			$grid.masonry();
+		}).on("hidden.bs.collapse", function(){
+			$grid.masonry();
+		}).on("click", ".project-tasks-completed-show", function(){
+			var $this = $(this);
+			$this.siblings(".project-tasks-completed").collapse("toggle");
+		}).on("click", ".project-archive", function(){
+			openConfirmation($("#confirmation"), "archive", "Are you sure you want to archive this project?");
+		});
+
+		//init masonry
+		$grid = $(".grid").masonry({
+			columnWidth: ".grid-size",
+			itemSelector: ".grid-item",
+			percentPosition: true,
+			gutter: 30
+		});
+
+
 	}).on("click", ".task-entry .checkmark", function(){
 		var $this = $(this);
+		var $entry = $this.closest(".task-entry");
+		var $project = $entry.closest(".project");
 		//check if currently making a request
 		if ($this.attr("data-update-state") == "sending") { 
 			return;
@@ -163,8 +186,8 @@ $stmt->close();
 			type: "post",
 			dataType: "json",
 			data: {
-				projectID: $this.closest(".project").attr("data-project-id"),
-				taskID: $this.closest(".task-entry").attr("data-entry-id"),
+				projectID: $project.attr("data-project-id"),
+				taskID: $entry.attr("data-entry-id"),
 				finished: $this.hasClass("checked") ? 0 : 1
 			},
 			success: function(data){
@@ -174,11 +197,17 @@ $stmt->close();
 					return;
 				}
 				//visually show new state
-				if ($this.hasClass("checked")){
+				if ($this.hasClass("checked")) {
 					$this.removeClass("checked");
+					$project.find(".project-tasks").prepend($entry.detach());
+					updateCompletedTask($project);
+					$grid.masonry();
 				}
-				else{
+				else {
 					$this.addClass("checked");
+					$project.find(".project-tasks-completed").prepend($entry.detach());
+					updateCompletedTask($project);
+					$grid.masonry();
 				}
 			},
 			error: function(response){

@@ -1,13 +1,8 @@
 <?php
+include_once __DIR__ . '/../../auth/php/auth_utils.php';
+include_once __DIR__ . '/../../php/TaskDB.php';
+include_once __DIR__ . '/../../php/utils.php';
 session_start();
-include_once __DIR__ . '/../lib/TaskDB.php';
-include_once __DIR__ . '/../auth/auth_utils.php';
-
-function abort($error_type, $error_msg = "")
-{
-	echo json_encode(array("error_type" => $error_type, "error_msg" => $error_msg));
-	exit();
-}
 
 //temp: this will be a db function
 function can_edit($db, $user_id, $project_id){
@@ -16,7 +11,7 @@ function can_edit($db, $user_id, $project_id){
 		FROM tbl_project_collaborators
 		WHERE UserID=? AND ProjectID=?
 	");
-	$stmt->bind_param("ii", $user_id, $user_id);
+	$stmt->bind_param("ii", $user_id, $project_id);
 	$stmt->execute();
 	$has_project = $stmt->fetch();
 	$stmt->close();

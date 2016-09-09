@@ -1,0 +1,102 @@
+.task-body textarea{
+	min-height: 50px;
+	width: 100%;
+	max-width: 100%;
+}
+
+.task-entry{
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.task-entry .task-title {
+  width: calc(100% - 55px);
+  vertical-align: middle;
+}
+
+.task-entry:not(:last-child){
+	border-bottom: 1px solid grey;
+}
+
+.task-entry:hover{
+	background-color: #eee;
+}
+
+.task-entry .checkmark{
+	width: 50px;
+	height: 50px;
+	font-size: 30px;
+	display: inline-block;
+	border: 3px solid #000;
+	border-radius: 50%;
+	color: #000;
+	text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.task-entry .checkmark.checked{
+	color: lightgreen;
+	border-color: lightgreen;
+}
+
+.task-entry .task-title{
+	display: inline-block;
+	padding-left: 10px;
+}
+
+#quick-task .task-body-options{
+	margin-top: 20px;
+}
+
+.project {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.project h4 {
+    display: inline-block;
+}
+
+.project .project-options {
+    vertical-align: middle;
+}
+@media only screen and (min-width: 768px) {
+    .project .project-options {
+        display: inline-block;
+        float: right;
+    }
+}
+
+.project .option-desc {
+    display: none;
+}
+@media only screen and (min-width: 768px) {
+    .project .option-desc {
+        display: inline-block;
+    }
+}
+
+.project-tasks-completed-show {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 1px solid #aaa;
+}
+
+.grid-size, .grid-item{
+    width: 100%;
+}
+
+@media only screen and (min-width: 992px){
+    .grid-size, .grid-item{
+        width: 48%;
+    }
+
+    .grid-gutter{
+        width: 4%;
+    }
+}
