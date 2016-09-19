@@ -4,7 +4,7 @@ include_once __DIR__ . '/../php/TaskDB.php';
 include_once __DIR__ . '/../php/template.php';
 
 session_start();
-$user = get_user_id('location: auth/login.php?redirect=../');
+$user = get_user_id('auth/login.php?redirect=../');
 
 $db_connection = new TaskDB();
 //retrieve data
