@@ -18,43 +18,41 @@ function can_edit($db, $user_id, $project_id){
 	return $has_project;
 }
 
-//TODO: make this into stored procedure
-function create_task($db, $user_id, $project_id){
+function create_task($db, $user_id, $project_id, $data){
 	//check if project exist/has authorization
 	if (!can_edit($db, $user_id, $project_id)){
 		abort("invalid_project");
 	}
 
-	//get task
-	if (!isset($_POST["task"])){
-		abort("no_task");
+	//get task name
+	if (!isset($data['task_name'])){
+		abort("no_task_name");
 	}
-	$task = $_POST["task"];
+	$task_name = $data['task_name'];
 
 	//insert task
 	$stmt = $db->prepare("
 		INSERT INTO tbl_tasks (ProjectID, Task)
 		VALUES (?, ?)
 	");
-	$stmt->bind_param("is", $project_id, $task);
+	$stmt->bind_param("is", $project_id, $task_name);
 	$stmt->execute();
 	if ($stmt->insert_id == 0){
 		abort("creation_error", $stmt->error);
 	}
 	else{
-		echo json_encode(array("id" => $stmt->insert_id, "task" => $task));
+		echo json_encode(array("id" => $stmt->insert_id, "task" => $task_name));
 	}
 }
 
-function update_task($db, $user_id, $project_id, $task_id){
+function update_task($db, $user_id, $project_id, $task_id, $data){
+	//check if project exist/has authorization
 	if (!can_edit($db, $user_id, $project_id)){
 		abort("invalid_project");
 	}
-	if (isset($_POST["task"])) {
 
-	}
-	else if (isset($_POST["finished"])) {
-		$finished = $_POST["finished"];
+	if (isset($data["finished"])) { //update finish status
+		$finished = $data["finished"];
 		$stmt = $db->prepare("
 			UPDATE tbl_tasks 
 			SET IsFinished=? 
@@ -62,11 +60,9 @@ function update_task($db, $user_id, $project_id, $task_id){
 		");
 		$stmt->bind_param("iii", $finished, $project_id, $task_id);
 		$stmt->execute();
-		echo json_encode(array());
 	}
-	else {
-		abort("no_op");
-	}
+
+	echo json_encode(array());
 }
 
 //check for prerequisites (user and project)
@@ -87,16 +83,20 @@ else {
 }
 
 $db_connection = new TaskDB();
-//intent logic
-if (isset($_POST["taskID"])) {
-	$task_id = $_POST["taskID"];
-	if ($task_id == -1){ //task creation
-		create_task($db_connection, $user, $project);
-	}
-	else{
-		update_task($db_connection, $user, $project, $task_id);
-	}
-}
-else{
-	abort("no_task_id");
+
+$changes = $_POST['changes'];
+switch ($changes['action']) {
+	case 'create':
+		create_task($db_connection, $user, $project, $changes);
+		break;
+	case 'update':
+		if (isset($_POST['taskID'])) {
+			update_task($db_connection, $user, $project, $_POST['taskID'], $changes);	
+		} else {
+			abort('no_task_id');
+		}
+		break;
+	default:
+		abort('invalid_action');
+		break;
 }

@@ -120,29 +120,18 @@ $stmt->close();
 			var $this = $(this);
 			var $modal = $("#quick-task");
 			var projectID = $modal.attr("data-project-id");
-			$.ajax({
-				url: "query/task_update.php",
-				type: "POST",
-				dataType: "json",
-				data: {
-					projectID: projectID,
-					taskID: -1,
-					task: $modal.find(".task-name").val()
-				},
-				success: function(data){
-					if (data["error_type"] != null){
-						alert("unable to update task: " + data["error_type"] + ": " + data["error_msg"]);
-						return;
-					}
-					$(".project[data-project-id='" + projectID + "'] .project-tasks").append(
-						sprintf(taskEntryTemplate, data["id"], "", data["task"])
-					);
-					$modal.modal("hide");
-					$grid.masonry();
-				},
-				error: function(response){
-					alert(response.responseText);
-				}
+
+			createTask(
+				projectID,
+				{ 
+					task_name: $modal.find(".task-name").val() 
+				}, 
+				function(data) {
+				$(".project[data-project-id='" + projectID + "'] .project-tasks").append(
+					sprintf(taskEntryTemplate, data["id"], "", data["task"])
+				);
+				$modal.modal("hide");
+				$grid.masonry();
 			});
 		});
 
@@ -177,22 +166,15 @@ $stmt->close();
 
 		$this.attr("data-update-state", "sending");
 
-		//send AJAX request
-		$.ajax({
-			url: "query/task_update.php",
-			type: "post",
-			dataType: "json",
-			data: {
-				projectID: $project.attr("data-project-id"),
-				taskID: $entry.attr("data-entry-id"),
+		updateTask(
+			$project.attr("data-project-id"),
+			$entry.attr("data-entry-id"),
+			{
 				finished: $this.hasClass("checked") ? 0 : 1
 			},
-			success: function(data){
+			function (data) {
 				$this.attr("data-update-state", "");
-				if (data["error_type"] != null){
-					alert("unable to update task: " + data["error_type"]);
-					return;
-				}
+
 				//visually show new state
 				if ($this.hasClass("checked")) {
 					$this.removeClass("checked");
@@ -206,12 +188,8 @@ $stmt->close();
 					updateCompletedTask($project);
 					$grid.masonry();
 				}
-			},
-			error: function(response){
-				alert(response.responseText);
 			}
-		});
-
+		);
 	}).on("click", ".project[data-project-id] .project-quick-add", function(){
 		//attach data to modal
 		$("#quick-task").attr("data-project-id", $(this).closest(".project").attr("data-project-id"));
